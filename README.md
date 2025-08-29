@@ -24,6 +24,5 @@ School project in Java to practice OOP (Computer Science III)
  
 ## To Do:  
   Implement interactions between characters (currently just character and machines)  
-  Implement actions for cops  
   Add better & more consistent text formatting  
   Add savefiles  
