@@ -63,6 +63,10 @@ public class moneyLaundromat {
                             catch (InputMismatchException e) { System.out.println("System.out.println"); break; }
                             System.out.println("How suspicious is " + name + "? ");
                             status = in.nextInt();
+                            if (status > 10) {
+                              System.out.println("Too high! Max suspicion level is 10. Setting to 10.");
+                              status = 10;
+                            }
                             cop c = new cop(name, money, status);
                             people.add(c);
                             System.out.println("Successfully created cop " + name + " with $" + money + " and " + status + " suspicion.\n");
@@ -91,6 +95,7 @@ public class moneyLaundromat {
                         if (value < 0 || value > people.size()) System.out.println("Invalid number, try again.");
                         if (value > 0 && value <= people.size()) {
                           System.out.println("Deleted " + people.get(value - 1).getName() + ".");
+                          if (people.get(value - 1).getType() == "ringmaster") ring = false;
                           people.remove(value - 1);
                         }
                         break;
@@ -160,27 +165,75 @@ public class moneyLaundromat {
                         if (people.get(value - 1).getType() == "ringmaster") {
                           System.out.println("Actions:\nGeneral actions:\n\t1) Get information\nMoney actions:\n\t2) Get money from laundry machine\nWorry actions:\n\t3) Get worry level\n\t4) Add worry\n\t5) Reduce worry");
                           try { status = in.nextInt(); }
-                          except(InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
+                          catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
                           switch (status) {
                             case 1:
                               System.out.println(people.get(value - 1));
                               break;
                             case 2:
-                              for (int i = 1; i <= machines.size() i++) System.out.println(i ") " + machines.get(i - 1));
+                              for (int i = 1; i <= machines.size(); i++) System.out.println(i + ") " + machines.get(i - 1));
                               System.out.println("Which machine would you like to use (0 to quit)? ");
                               try { status = in.nextInt(); }
                               catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
                               if (status == 0) break;
                               if (status < 0 || status > machines.size()) System.out.println("Invalid number, try again.");
                               else {
-                                System.out.println("Now collecting money from machine " + machines.get(value - 1));
+                                System.out.println("Now collecting money from machine " + machines.get(status - 1));
                                 people.get(value - 1).addMoney(machines.get(status - 1).getMoney());
                                 machines.get(status - 1).setMoney(0);
                               }
                           }
                         }
                         if (people.get(value - 1).getType() == "cop") {
-                          System.out.println("Actions:\nGeneral actions:\n\t1) Get information");
+                          System.out.println("Actions:\nGeneral actions:\n\t1) Get information\nMoney actions:\n\t2) Check money\nSuspicion options:\n\t3) Get suspicion\n\t4) Add suspicion\n\t5) Remove suspicion\nLaw actions:\n\t6) Search person");
+                          try { status = in.nextInt(); }
+                          catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
+                          switch (status) {
+                            case 1:
+                              System.out.println(people.get(value - 1));
+                            case 2:
+                              System.out.println(people.get(value - 1).getMoney());
+                            case 3:
+                              // System.out.println((people.get(value - 1).getType() == "cop") ? (cop) people.get(value - 1).getSus() : "");
+                              if (people.get(value - 1).getType() == "cop") {
+                                cop c = (cop) people.get(value - 1);
+                                System.out.println(c.getSus());
+                              }
+                              else System.out.println("This person isn't a cop");
+                            case 4:
+                              // System.out.println((people.get(value - 1).getType() == "cop") ? ((cop) people.get(value - 1).getSus() != 10) ? "Increasing suspicion by 1" : "Your cop's suspicion value is already too high! (max 10)" : "");
+                              if (people.get(value - 1).getType() == "cop") {
+                                cop c = (cop) people.get(value - 1);
+                                if (c.getSus() <= 10) c.addSus(1);
+                                else System.out.println("Your cop's suspicion level's too high! (max 10)");
+                              }
+                            case 5:
+                              System.out.println("Decrementing suspicion by 1.");
+                              if (people.get(value - 1).getType() == "cop") {
+                                cop c = (cop) people.get(value - 1);
+                                if (c.getSus() == 0) System.out.println("You can't have negative suspicion.");
+                                else c.removeSus(1);
+                              }
+                            case 6:
+                              for (int i = 1; i <= people.size(); i++) System.out.println(i + ") " + people.get(i - 1));
+                              System.out.println("Who would you like to search? ");
+                              try { status = in.nextInt(); }
+                              catch (InputMismatchException e) { System.out.println("Invalid option, please try again."); break; }
+                              if (status == 0) break;
+                              if (status <= 0 || status > people.size()) System.out.println("Invalid number, please try again.");
+                              else {
+                                // if ((cop) ((people.get(value - 1).search(people.get(status - 1))) >= ((cop) (people.get(value - 1).getSus()) * 100)) && people.get(status - 1).getType() == "ringmaster" && people.get(value - 1) instanceof cop) { System.out.println("You've caught the ringmaster red handed, good job!"); return; }
+                                if (people.get(value - 1).getType() == "cop") {
+                                  cop c = (cop) people.get(value - 1);
+                                  if ((c.search(people.get(status - 1)) > ((10 - c.getSus()) * 100)) && people.get(status - 1).getType() == "ringmaster") {
+                                    System.out.println("You've caught the ringmaster red handed!");
+                                    return;
+                                  }
+                                  else System.out.println("Not enough evidence to arrest them...");
+                                }
+                                else System.out.println("You're not even a cop!");
+                              }
+                          }
                         }
                       }
                  }
