@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 public class moneyLaundromat {
 	public static void main (String[] args) {
         ArrayList<person> people = new ArrayList<>();
@@ -39,13 +40,13 @@ public class moneyLaundromat {
                                 name = in.nextLine();
                                 System.out.println("How much money does " + name + " get to start with? ");
                                 try { money = in.nextDouble(); }
-                                catch (InputMismatchException e) { System.out.println("Invalid input, please try agian."); }
+                                catch (InputMismatchException e) { System.out.println("Invalid input, please try agian."); break; }
                                 System.out.println("How worried is " + name + "? ");
                                 try { status = in.nextInt(); }
-                                catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); }
+                                catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
                                 System.out.println("How much money can their vault store? ");
                                 try { value = in.nextInt(); }
-                                catch (InputMismatchException e) { System.out.println("Invalid input, please try again!"); };
+                                catch (InputMismatchException e) { System.out.println("Invalid input, please try again!"); break; };
                                 ringmaster r = new ringmaster(name, money, status, value);
                                 people.add(r);
                                 System.out.println("Successfully created ringmaster " + name + " with $" + money + " and " + status + " worry.\n");
@@ -59,7 +60,7 @@ public class moneyLaundromat {
                             name = in.nextLine();
                             System.out.println("How much money does " + name + " get to start with? ");
                             try { money = in.nextDouble(); }
-                            catch (InputMismatchException e) { System.out.println("System.out.println"); }
+                            catch (InputMismatchException e) { System.out.println("System.out.println"); break; }
                             System.out.println("How suspicious is " + name + "? ");
                             status = in.nextInt();
                             cop c = new cop(name, money, status);
@@ -69,7 +70,7 @@ public class moneyLaundromat {
                         case 'm':
                             System.out.println("How much money is in your launderi- LAUNDRY machine to start with?");
                             try { money = in.nextDouble(); }
-                            catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); }
+                            catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
                             machine m = new machine(money);
                             machines.add(m);
                             System.out.println("Successfully created laundry machine with $" + money + ".\n");
@@ -120,14 +121,14 @@ public class moneyLaundromat {
                       System.out.println("Input the number of the person you'd like to perform an action on (0 to quit): ");
                       // if (!(value = in.nextInt())) System.out.println("Invalid input"); got too lazy for actual error handling, this didn't work because java scanner's a hater
                       try { value = in.nextInt(); }
-                      catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); }
+                      catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
                       if (value == 0) break;
                       if (value < 0 || value > people.size()) System.out.println("Invalid number, try again.");
                       if (value > 0 && value <= people.size()) {
                         if (people.get(value - 1).getType() == "person") {
                           System.out.println("Actions:\nGeneral actions:\n\t1) Get information\nMoney actions:\n\t2) Get money\n\t3) Use a laundry machine");
                           try { status = in.nextInt(); }
-                          catch (InputMismatchException e) { System.out.println("Invalid input, please try again! "); value = 0; /*Setting value to zero triggers the break right after this*/ }
+                          catch (InputMismatchException e) { System.out.println("Invalid input, please try again! "); value = 0; /*Setting value to zero triggers the break right after this*/ break; /* Nevermind, doesn't like uninit var */}
                           switch (status) {
                             case 1:
                               System.out.println(people.get(value - 1));
@@ -139,7 +140,7 @@ public class moneyLaundromat {
                               for (int i = 1; i <= machines.size(); i++) System.out.println(i + ") " + machines.get(i - 1));
                               System.out.println("Which machine would you like to use (0 to quit)? ");
                               try { status = in.nextInt(); }
-                              catch (InputMismatchException e) {System.out.println("Invalid input, please try again."); }
+                              catch (InputMismatchException e) {System.out.println("Invalid input, please try again."); break; }
                               if (status == 0) break;
                               if (status < 0 || value > machines.size()) System.out.println("Invalid number, try again.");
                               if (status > 0 && value <= machines.size()) {
