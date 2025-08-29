@@ -142,10 +142,10 @@ public class moneyLaundromat {
                               try { status = in.nextInt(); }
                               catch (InputMismatchException e) {System.out.println("Invalid input, please try again."); break; }
                               if (status == 0) break;
-                              if (status < 0 || value > machines.size()) System.out.println("Invalid number, try again.");
-                              if (status > 0 && value <= machines.size()) {
+                              if (status < 0 || status > machines.size()) System.out.println("Invalid number, try again.");
+                              if (status > 0 && status <= machines.size()) {
                                 System.out.println("Using a machine costs $5. Now depositing $5.");
-                                if ((people.get(value - 1).getMoney()) > 5) {
+                                if ((people.get(status - 1).getMoney()) > 5) {
                                   people.get(value - 1).subMoney(5);
                                   machines.get(status - 1).useMachine(5);
                                 }
@@ -158,7 +158,29 @@ public class moneyLaundromat {
                           }
                         }
                         if (people.get(value - 1).getType() == "ringmaster") {
-                          System.out.println("Actions:\nGeneral actions:\n\t1) Get information\nWorry actions:\n\t2) Get worry level\n\t3) Add worry\n\t4) Reduce worry");
+                          System.out.println("Actions:\nGeneral actions:\n\t1) Get information\nMoney actions:\n\t2) Get money from laundry machine\nWorry actions:\n\t3) Get worry level\n\t4) Add worry\n\t5) Reduce worry");
+                          try { status = in.nextInt(); }
+                          except(InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
+                          switch (status) {
+                            case 1:
+                              System.out.println(people.get(value - 1));
+                              break;
+                            case 2:
+                              for (int i = 1; i <= machines.size() i++) System.out.println(i ") " + machines.get(i - 1));
+                              System.out.println("Which machine would you like to use (0 to quit)? ");
+                              try { status = in.nextInt(); }
+                              catch (InputMismatchException e) { System.out.println("Invalid input, please try again."); break; }
+                              if (status == 0) break;
+                              if (status < 0 || status > machines.size()) System.out.println("Invalid number, try again.");
+                              else {
+                                System.out.println("Now collecting money from machine " + machines.get(value - 1));
+                                people.get(value - 1).addMoney(machines.get(status - 1).getMoney());
+                                machines.get(status - 1).setMoney(0);
+                              }
+                          }
+                        }
+                        if (people.get(value - 1).getType() == "cop") {
+                          System.out.println("Actions:\nGeneral actions:\n\t1) Get information");
                         }
                       }
                  }
