@@ -14,7 +14,7 @@ School project in Java to practice OOP (Computer Science III)
   Error handling assures no interuptions during gameplay  
   
 ## How to play:  
-  ### Requirements:  
+  ### Dependencies:  
     JDK > 7  
   ### Building & running (any platform, java runs anywhere with JDK!):  
     git clone https://github.com/AaravTheGreatest/MoneyLaundromat  
