@@ -231,9 +231,8 @@ public class moneyLaundromat {
                               }
                           }
                         }
-                      }
+                    break;
                  }
-                 break;
                 case 't': // for testing
                     for (person i: people) System.out.println(i);
                     break;
